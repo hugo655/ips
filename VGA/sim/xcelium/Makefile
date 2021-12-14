@@ -2,10 +2,12 @@ RTL_DIR = ../../RTL
 TB_DIR = ../tb
 
 RTL_SV = $(RTL_DIR)/*.sv
-TB = $(TB_DIR)/tb.sv
+TB_SV = $(TB_DIR)/*.sv
+
+TIMESCALE = 1ns/1ps
 
 LOGFILE = $(shell date --iso=seconds)
-RUN_ARGS_COMMON = -access +r -input ./shm.tcl
+RUN_ARGS_COMMON = -timescale $(TIMESCALE) -access +r -input ./shm.tcl
 
 all: 
 	@printf "Run\n\
@@ -15,7 +17,7 @@ all:
 
 sim: clean shm.tcl
 	@printf "\n#### RUNNING XRUN ####\n\n"
-	xrun -64bit $(RTL_SV) $(TB) $(RUN_ARGS_COMMON)
+	xrun -64bit $(RTL_SV) $(TB_SV) $(RUN_ARGS_COMMON)
 
 waves:
 	@if [ -d "waves.shm" ]; then  simvision waves.shm  ; fi &
