@@ -1,3 +1,19 @@
+/*
+
+This testbench tests the module core_480. It is not selfchecking. It recoimmends the user 
+check the follwing frequencies in the waveform viewer:
+
+  [ok] VGA Frequency: 25.175 MHz (expected) ; 25.126 MHz  (simulation)
+  [ok] h_sync lenght: 3.8133 us(expected);3.8208 us (simulation)
+  [ok] v_sync lenght: 63.55 ms (expected); 63.68 ms(simulation)
+  [ok] h_sync frequency: 31.47 KHz (expected) ; 31.51 KHz (simulation)
+  [ok] v_sync frequency: 59.9 Hz (expected); 59.82 Hz (simulation)
+  [ok] Range of Sx: 0-799 (expected) ; 0-799 (simulation) 
+  [ok] Range of Sy: 0-524 (expected) ; 0-524 (simulation)  
+
+Recommended timescale: 1ns/1ps
+
+*/
 module tb();
   
     
@@ -23,30 +39,14 @@ core_480 my_vga_core(.i_VGA_CLOCK(clk_1),
     rst_n <= 1'b0;
 
     
-    $display("Simuation Begins ... \n\n");
+    $display("Simulation Begins ... \n\n");
     #10 clk_en <= 1'b1; 
     #50 rst_n <= 1'b1;
     
     
     
     #100_000_000 //(100 ms)
+    $display("End of simulation  ... \n\n");
     $finish;
   end
- 
-
-///////////////
-// CHECKERS // 
-///////////////
-/*
- The following parameters were checked in simulation using Modelsim: 
-  [ok] VGA Frequency: 25.175 MHz (expected) ; 25.126 MHz  (simulation)
-  [ok] h_sync lenght: 3.8133 us(expected);3.8208 us (simulation)
-  [ok] v_sync lenght: 63.55 ms (expected); 63.68 ms(simulation)
-  [ok] h_sync frequency: 31.47 KHz (expected) ; 31.51 KHz (simulation)
-  [ok] v_sync frequency: 59.9 Hz (expected); 59.82 Hz (simulation)
-  [ok] Range of Sx: 0-799 (expected) ; 0-799 (simulation) 
-  [ok] Range of Sy: 0-524 (expected) ; 0-524 (simulation)  
-*/
-    
-  
 endmodule
