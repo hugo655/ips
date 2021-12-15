@@ -1,8 +1,10 @@
 RTL_DIR = ../../RTL
 TB_DIR = ../tb
+AUX_MODULES_DIR = ../aux_modules
 
-RTL_SV = $(RTL_DIR)/*.sv
-TB_SV = $(TB_DIR)/*.sv
+RTL_LIST = *.sv
+AUX_MODULES_LIST = *.sv
+TB = tb.sv
 
 TIMESCALE = 1ns/1ps
 
@@ -11,13 +13,20 @@ RUN_ARGS_COMMON = -timescale $(TIMESCALE) -access +r -input ./shm.tcl
 
 all: 
 	@printf "Run\n\
-	 make sim - To simulate with xrun\n\
-	 make waves - To view waveforms \n" 
-
+	 make sim TB=<tb_name> - To simulate with xrun\n \
+	 TB options:\n\
+	 \t*core_480 \n\
+	\n\
+	 make waves -  view waveforms with simvision \n \
+	\n\
+	 make clean_waves - To delete waveforms \n \
+	\n\
+	 make clean - To save log files and clean this directory - preserves waveforms \n \
+	\n"  
 
 sim: clean shm.tcl
 	@printf "\n#### RUNNING XRUN ####\n\n"
-	xrun -64bit $(RTL_SV) $(TB_SV) $(RUN_ARGS_COMMON)
+	xrun -64bit $(RTL_DIR)/$(RTL_LIST) $(AUX_MODULES_DIR)/$(AUX_MODULES_LIST) $(TB_DIR)/$(TB)_tb.sv $(RUN_ARGS_COMMON)
 
 waves:
 	@if [ -d "waves.shm" ]; then  simvision waves.shm  ; fi &
@@ -27,6 +36,9 @@ shm.tcl:
 	@if [ ! -f shm.tcl ]; then printf \
 	   "database -open waves -shm\nprobe -create just_past_top -depth all -all shm -database waves\nrun\nexit" \
             > shm.tcl; fi
+clean_waves:
+	@printf "\n#### DELETING WAVEFORMS !! ####\n\n"
+	@if [ -d "waves.shm" ]; then rm -rf waves.shm  ; fi
 clean:
 	@printf "\n#### COPYING LOGS AND CLEANING DIRECTORY ####\n\n"
 	@if [ ! -d "./logs" ]; then printf  'Making  directory  ./logs ... \n' ; mkdir ./logs ; fi	
