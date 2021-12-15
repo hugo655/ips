@@ -16,6 +16,7 @@ all:
 	 make sim TB=<tb_name> - To simulate with xrun\n \
 	 TB options:\n\
 	 \t*core_480 \n\
+	 \t*VGA \n\
 	\n\
 	 make waves -  view waveforms with simvision \n \
 	\n\
