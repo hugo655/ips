@@ -1,7 +1,8 @@
 /*
 
 This testbench tests the module core_480. It is not selfchecking. It recoimmends the user 
-check the follwing frequencies in the waveform viewer:
+check the following frequencies in the waveform viewer:
+
 
   [ok] VGA Frequency: 25.175 MHz (expected) ; 25.126 MHz  (simulation)
   [ok] h_sync lenght: 3.8133 us(expected);3.8208 us (simulation)
@@ -11,7 +12,9 @@ check the follwing frequencies in the waveform viewer:
   [ok] Range of Sx: 0-799 (expected) ; 0-799 (simulation) 
   [ok] Range of Sy: 0-524 (expected) ; 0-524 (simulation)  
 
+The specs are taken from: http://tinyvga.com/vga-timing/640x480@60Hz
 Recommended timescale: 1ns/1ps
+
 
 */
 module tb();

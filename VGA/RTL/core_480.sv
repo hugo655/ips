@@ -1,3 +1,8 @@
+/*
+This module assumes a 25 MHz is driving it. Its specs are based
+on 640x480@60Hz VGA standard specs available at http://tinyvga.com/vga-timing/640x480@60Hz 
+*/
+
 module core_480(
   input logic i_VGA_CLOCK,
   input logic i_rst_n,
@@ -18,7 +23,7 @@ module core_480(
   localparam V_BACK_PORCH	=33;// 33 = 0x21
   localparam V_ACTIVE_REGION	=V_BACK_PORCH + 480;// 513 = 0x201
   localparam V_FRONT_PORCH	=V_ACTIVE_REGION+10;// 523 = 0x20B 
-  localparam V_SYNC		=V_FRONT_PORCH+2;// 525 = 0x20D
+  ocalparam V_SYNC		=V_FRONT_PORCH+2;// 525 = 0x20D
   
   logic x_active;
   logic y_active;
