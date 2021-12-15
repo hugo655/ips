@@ -23,7 +23,7 @@ module core_480(
   localparam V_BACK_PORCH	=33;// 33 = 0x21
   localparam V_ACTIVE_REGION	=V_BACK_PORCH + 480;// 513 = 0x201
   localparam V_FRONT_PORCH	=V_ACTIVE_REGION+10;// 523 = 0x20B 
-  ocalparam V_SYNC		=V_FRONT_PORCH+2;// 525 = 0x20D
+  localparam V_SYNC		=V_FRONT_PORCH+2;// 525 = 0x20D
   
   logic x_active;
   logic y_active;
