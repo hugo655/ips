@@ -25,9 +25,9 @@ logic reg_SYNC_N;
 logic reg_BLANK_N;
 
 // Wires for colours
-logic [3:0] VGA_R;
-logic [3:0] VGA_B;
-logic [3:0] VGA_G;
+logic [7:0] VGA_R;
+logic [7:0] VGA_B;
+logic [7:0] VGA_G;
 
 // Wires for drawing logic
 logic q_draw;
@@ -52,27 +52,15 @@ always_ff @(posedge i_VGA_CLK) begin
 		reg_BLANK_N <= 1'b1;
 		reg_SYNC_N <= 1'b1;
 	end else begin
-		reg_VGA_R <= {4'b0,VGA_R};
-		reg_VGA_B <= {4'b0,VGA_B};
-		reg_VGA_G <= {4'b0,VGA_G};
+		reg_VGA_R <= {VGA_R};
+		reg_VGA_B <= {VGA_B};
+		reg_VGA_G <= {VGA_G};
 		reg_VGA_VS <= vsync;
 		reg_VGA_HS <= hsync;
-		reg_BLANK_N <= ~de ;
+		reg_BLANK_N <= de ;
 		reg_SYNC_N <= 1'b1; //From ADV7123 DAC datasheet
 	end
 end
-
-// Drawing logic
-
-//Square
-assign q_draw = (Sx<10'd32 && Sy<10'd32)?1'b1:1'b0;
-
-
-// Colours
-assign VGA_R = (de)?4'b0:((q_draw)? 4'hF :4'h0);
-assign VGA_B = (de)?4'b0:((q_draw)? 4'h8 :4'h8);
-assign VGA_G = (de)?4'b0:((q_draw)? 4'h0 :4'hF);
-
 
 
 core_480 core_480_1(.i_VGA_CLOCK(i_VGA_CLK),
@@ -82,4 +70,101 @@ core_480 core_480_1(.i_VGA_CLOCK(i_VGA_CLK),
                   .o_hsync(hsync),
                   .o_Sx(Sx),
                   .o_Sy(Sy));
+						
+						
+
+// TESTING PATTERNS
+
+/*
+////////////////
+// TOP SQUARE //
+///////////////
+assign q_draw = (Sx<10'd100 && Sy<10'd100)?1'b1:1'b0;
+
+
+// Colours
+assign VGA_R = (~de)?8'h0:((q_draw)? 8'hFF :8'h0);
+assign VGA_G = (~de)?8'h0:((q_draw)? 8'h88 :8'h88);
+assign VGA_B = (~de)?8'h0:((q_draw)? 8'h0 :8'hFF);
+
+*/
+
+/*
+///////////////////////////////
+// COLOUR-POSITION PATTERN I //
+///////////////////////////////
+
+
+assign VGA_R = (de)?Sy:8'h0;
+assign VGA_G = (de)?~Sy:8'h0;
+assign VGA_B = (de)?Sx:8'h0;
+
+*/
+
+/*
+///////////////////////////////
+// COLOUR-POSITION PATTERN II //
+///////////////////////////////
+
+
+assign VGA_R = (de)?Sy:8'h0;
+assign VGA_G = (de)?Sy^Sx:8'h0;
+assign VGA_B = (de)?Sx:8'h0;
+*/
+
+///////////////////////////////
+// COLOUR-POSITION PATTERN III //
+///////////////////////////////
+
+always_comb begin
+if(de) begin
+	if(10'h001 & Sy) begin
+		VGA_R = Sx;
+		VGA_G = 8'b0;
+		VGA_B =8'b0;
+	end
+	
+	else if(10'h002 & Sy) begin
+		VGA_R = 8'b0;
+		VGA_G = Sx;
+		VGA_B =8'b0;
+	end
+	
+		else if(10'h004 & Sy) begin
+		VGA_R = 8'b0;
+		VGA_G = 8'b0;
+		VGA_B =Sx;
+	end 
+	 
+	else if(10'h008 & Sy) begin
+		VGA_R = Sx;
+		VGA_G = Sx;
+		VGA_B =8'b0;
+	end
+	
+	else if(10'h010 & Sy) begin
+		VGA_R = 8'b0;
+		VGA_G = Sx;
+		VGA_B = Sx;
+	end
+	
+	else if(10'h020 & Sy) begin
+		VGA_R = Sx;
+		VGA_G = 8'b0;
+		VGA_B = Sx;
+	end
+	
+	else begin
+	VGA_R = 8'b0;
+	VGA_G = 8'b0;
+	VGA_B = 8'b0;
+	end
+end 
+else begin
+	VGA_R = 8'b0;
+	VGA_G = 8'b0;
+	VGA_B = 8'b0;
+end
+end
+
 endmodule
