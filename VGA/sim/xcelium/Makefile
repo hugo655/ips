@@ -35,7 +35,7 @@ waves:
 shm.tcl:
 	@printf "\n#### CREATING ./shm.tcl FILE ####\n\n"
 	@if [ ! -f shm.tcl ]; then printf \
-	   "database -open waves -shm\nprobe -create just_past_top -depth all -all shm -database waves\nrun\nexit" \
+	   "database -open waves -shm\nprobe -create tb -depth all -all -shm -database waves\nrun\nexit" \
             > shm.tcl; fi
 clean_waves:
 	@printf "\n#### DELETING WAVEFORMS !! ####\n\n"
